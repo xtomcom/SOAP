@@ -1,0 +1,33 @@
+framework:
+    messenger:
+        buses:
+            messenger.bus.default:
+                middleware:
+                    - App\Messenger\OperationStatusMiddleware
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        failure_transport: failed
+
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            host_operations:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange: { name: host_operations }
+                    queues: { host_operations: ~ }
+            operation_status:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange: { name: operation_status }
+                    queues: { operation_status: ~ }
+            failed:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    exchange: { name: failed }
+                    queues: { failed: ~ }
+            # failed: 'doctrine://default?queue_name=failed'
+            # sync: 'sync://'
+
+        routing:
+            # Route your messages to the transports
+            'App\Messenger\HostOperationInterface': host_operations
+            'App\Messenger\OperationStatusInterface': operation_status

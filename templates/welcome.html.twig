@@ -1,0 +1,27 @@
+{# @var ea \EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext #}
+{% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block content_title %}
+    {{ title|trans }}
+{% endblock %}
+
+{% block main %}
+    <style>
+       .list-group  { max-width: 600px; }
+    </style>
+    <div class="list-group">
+        <a href="{{ create_host_link }}" class="list-group-item list-group-item-action">
+            <i class="fa fas fa-plus" aria-hidden="true"></i> {{ 'create_host'|trans }}
+        </a>
+
+        {% if is_granted('ROLE_USER') %}
+            <a href="{{ logout_link }}" class="list-group-item list-group-item-action">
+                <i class="fa fas fa-sign-out" aria-hidden="true"></i> {{ 'logout'|trans }}
+            </a>
+        {% else %}
+            <a href="{{ login_link }}" class="list-group-item list-group-item-action">
+                <i class="fa fas fa-sign-in" aria-hidden="true"></i> {{ 'admin_login'|trans }}
+            </a>
+        {% endif %}
+    </div>
+{% endblock %}

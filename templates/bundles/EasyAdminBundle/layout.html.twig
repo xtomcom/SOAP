@@ -1,0 +1,16 @@
+{# templates/bundles/EasyAdminBundle/layout.html.twig #}
+
+{# DO THIS: the '!' symbol tells Symfony to extend from the original template #}
+{% extends '@!EasyAdmin/layout.html.twig' %}
+
+{% block content_header_wrapper %}
+    {{ parent() }}
+    {% if ea.crud is not empty and ea.crud.currentAction in ['new', 'edit', 'detail'] and ea.crud.entityFqcn == 'App\\Entity\\Host' %}
+        <section class="content-body">
+            <div class="alert alert-primary" role="alert" style="margin-bottom: 15px">
+                {{ 'dhcp_help'|trans }}{{ dhcp_server }}
+            </div>
+        </section>
+    {% endif %}
+
+{% endblock %}

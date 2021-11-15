@@ -1,0 +1,7 @@
+#!ipxe
+
+set base http://repo.almalinux.org/almalinux/8.4/BaseOS/x86_64/os
+
+kernel ${base}/images/pxeboot/vmlinuz initrd=initrd.img net.ifnames=0 biosdevname=0 ifname=eth0:{{ host.macAddress }} ip={{ host.ipAddress }}::{{ host.gateway }}:{{ host.netmask }}:{{ host.hostname }}:eth0:none {% for dns in host.dns %} nameserver={{ dns }} {% endfor %} inst.ks={{ preseed_url }} inst.stage2=${base}/ inst.gpt
+initrd ${base}/images/pxeboot/initrd.img
+boot

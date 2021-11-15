@@ -1,0 +1,108 @@
+# Localization
+
+d-i debian-installer/language string en
+d-i debian-installer/country string US
+d-i debian-installer/locale string en_US.UTF-8
+d-i keyboard-configuration/xkb-keymap select us
+d-i keyboard-configuration/layoutcode string us
+d-i keyboard-configuration/variantcode string
+d-i console-setup/ask_detect boolean false
+d-i console-setup/layoutcode string us
+
+# Network configuration
+
+d-i netcfg/choose_interface select auto
+d-i netcfg/disable_autoconfig boolean true
+d-i netcfg/get_ipaddress string {{ host.ipAddress }}/{{ host.prefix }}
+d-i netcfg/get_gateway string {{ host.gateway }}
+d-i netcfg/get_nameservers string {{ host.dns|join(' ') }}
+d-i netcfg/confirm_static boolean true
+d-i netcfg/hostname string {{ host.hostname }}
+d-i netcfg/get_hostname string {{ host.hostname }}
+d-i netcfg/get_domain string
+d-i hw-detect/load_firmware boolean true
+
+# Mirror settings
+
+d-i mirror/country string manual
+d-i mirror/protocol string https
+d-i mirror/https/hostname string archive.ubuntu.com
+d-i mirror/https/directory string /ubuntu
+d-i mirror/https/proxy string
+d-i mirror/suite string focal
+
+# Account setup
+
+d-i passwd/root-login boolean true
+d-i passwd/make-user boolean false
+d-i passwd/root-password password {{ host.rootPassword }}
+d-i passwd/root-password-again password {{ host.rootPassword }}
+
+# Clock and time zone setup
+
+d-i time/zone string UTC
+d-i clock-setup/utc boolean true
+d-i clock-setup/ntp boolean true
+d-i clock-setup/ntp-server string ntp.ubuntu.com
+
+# Partitioning
+
+d-i partman-auto/method string regular
+d-i partman/early_command string debconf-set partman-auto/disk "$(list-devices disk | head -n 1)"
+d-i partman-partitioning/choose_label string gpt
+d-i partman-partitioning/default_label string gpt
+d-i partman/default_filesystem string ext4
+d-i partman-auto/expert_recipe string \
+naive :: \
+106 106 106 free \
+$iflabel{ gpt } \
+$reusemethod{ } \
+method{ efi } \
+format{ } \
+. \
+1075 1076 -1 $default_filesystem \
+method{ format } \
+format{ } \
+use_filesystem{ } \
+$default_filesystem{ } \
+mountpoint{ / } \
+.
+d-i partman-efi/non_efi_system boolean true
+d-i partman-auto/choose_recipe select naive
+d-i partman-basicfilesystems/no_swap boolean false
+d-i partman-partitioning/confirm_write_new_label boolean true
+d-i partman/choose_partition select finish
+d-i partman/confirm boolean true
+d-i partman/confirm_nooverwrite boolean true
+
+# Base system installation
+
+d-i base-installer/kernel/image string linux-image-generic
+
+# Apt setup
+
+d-i apt-setup/restricted boolean false
+d-i apt-setup/universe boolean true
+d-i apt-setup/backports boolean true
+d-i apt-setup/services-select multiselect security
+d-i apt-setup/security_host string security.ubuntu.com
+d-i apt-setup/security_path string /ubuntu
+
+# Package selection
+
+tasksel tasksel/first multiselect ubuntu-server
+d-i pkgsel/include string ca-certificates libpam-systemd openssh-server
+popularity-contest popularity-contest/participate boolean false
+d-i pkgsel/update-policy select none
+d-i pkgsel/updatedb boolean true
+
+# Boot loader installation
+
+d-i grub-installer/only_debian boolean true
+d-i grub-installer/with_other_os boolean true
+d-i debian-installer/add-kernel-opts string net.ifnames=0 biosdevname=0
+
+# Finishing up the installation
+
+d-i finish-install/reboot_in_progress note
+d-i preseed/late_command string in-target sh -c 'true; if [ ! -e "/etc/ssh/sshd_config.backup" ]; then cp "/etc/ssh/sshd_config" "/etc/ssh/sshd_config.backup"; fi; sed -Ei "s/^#?PermitRootLogin .+/PermitRootLogin yes/" /etc/ssh/sshd_config; { echo "net.core.default_qdisc=fq"; echo "net.ipv4.tcp_congestion_control=bbr"; } > /etc/sysctl.d/bbr.conf'

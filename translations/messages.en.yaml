@@ -1,0 +1,59 @@
+user: User
+users: Users
+boot_template: Boot Template
+boot_templates: Boot Templates
+host: Host
+hosts: Hosts
+operation: Operation
+operations: Operations
+welcome: Welcome to SOAP
+title: SOAP
+create_host: Create Host
+logout: Logout
+admin_login: Admin Login
+
+id: ID
+username: Username
+roles: Roles
+password: Password
+
+message: Message
+status: Status
+created_at: Created At
+dispatched_at: Dispacthed At
+handled_at: Handled At
+
+name: Name
+type: Type
+twig_templates: Twig Templates
+ipxe_script: iPXE Script
+ipxe_script_url: iPXE Script URL
+install_config: Install Config
+install_config_url: Install Config URL
+install_config_help: Equivalent to preseed or kickstart file content
+link_url: Link URL
+boot_scripts: Boot Scripts
+boot_scripts_help: Supports Twig template
+root_password: Root Password
+root_password_help: Leave the field blank to generate a random password
+delete_action: Delete
+expires_at: Expires At
+expires_after: Expires After
+hostname: Hostname
+mac_address: MAC
+ip_address: IP
+prefix: CIDR
+gateway: Gateway
+dns: DNS
+registration: Registration
+deletion: Deletion
+reaches_to_expire: Hits to Expire
+
+expires:
+  1r: 1 hit
+  1h: 1 hour
+  1d: 1 day
+  1w: 1 week
+  30d: 30 days
+
+dhcp_help: 'Please configure the DHCP server address to '

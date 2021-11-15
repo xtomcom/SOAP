@@ -1,0 +1,5 @@
+#!ipxe
+
+kernel http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/ubuntu-installer/amd64/linux initrd=initrd.gz net.ifnames=0 biosdevname=0 auto url={{ preseed_url }} netcfg/choose_interface=auto netcfg/disable_autoconfig=true netcfg/get_ipaddress={{ host.ipAddress }}/{{ host.prefix }} netcfg/get_gateway={{ host.gateway }} netcfg/get_nameservers="{{ host.dns|join(' ') }}" netcfg/confirm_static=true netcfg/hostname={{ host.hostname }} netcfg/get_hostname={{ host.hostname }} netcfg/get_domain= hw-detect/load_firmware=true debian-installer/language=en debian-installer/country=US debian-installer/locale=en_US.UTF-8 keyboard-configuration/xkb-keymap=us keyboard-configuration/layoutcode=us keyboard-configuration/variantcode= console-setup/ask_detect=false console-setup/layoutcode=us
+initrd http://archive.ubuntu.com/ubuntu/dists/focal/main/installer-amd64/current/legacy-images/netboot/ubuntu-installer/amd64/initrd.gz
+boot

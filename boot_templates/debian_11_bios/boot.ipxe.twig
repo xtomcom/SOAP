@@ -1,0 +1,5 @@
+#!ipxe
+
+kernel http://deb.debian.org/debian/dists/bullseye/main/installer-amd64/current/images/netboot/debian-installer/amd64/linux initrd=initrd.gz net.ifnames=0 biosdevname=0 auto url={{ preseed_url }} netcfg/choose_interface=auto netcfg/disable_autoconfig=true netcfg/get_ipaddress={{ host.ipAddress }}/{{ host.prefix }} netcfg/get_gateway={{ host.gateway }} netcfg/get_nameservers="{{ host.dns|join(' ') }}" netcfg/confirm_static=true netcfg/hostname={{ host.hostname }} netcfg/get_hostname={{ host.hostname }} netcfg/get_domain= hw-detect/load_firmware=true debian-installer/language=en debian-installer/country=US debian-installer/locale=en_US.UTF-8 keyboard-configuration/xkb-keymap=us
+initrd http://deb.debian.org/debian/dists/bullseye/main/installer-amd64/current/images/netboot/debian-installer/amd64/initrd.gz
+boot
