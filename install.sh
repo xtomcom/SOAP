@@ -145,8 +145,8 @@ apt_upgrade() {
     apt upgrade -y --no-install-recommends -o dpkg::progress-fancy=false
 }
 
-soap_git_repo=git@git.tt:xTom/soap.git
-soap_git_branch=dev
+soap_git_repo=https://github.com/xtomcom/SOAP.git
+soap_git_branch=master
 fetch_soap() {
     if [ -d "$soap_dir" ]; then
         cd "$soap_dir"
